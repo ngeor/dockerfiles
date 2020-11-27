@@ -280,7 +280,7 @@ For maintainability, merged all REST API QBasic programs into one file:
 | Docker (inside)  |                 1269.44 |
 | Apache           |                 1621.27 |
 
-# v0.5.0 (2020-07-27)
+# vNext (2020-07-27)
 
 Using a rust basic interpreter (no DOSBox involved).
 
@@ -294,7 +294,11 @@ Using a rust basic interpreter (no DOSBox involved).
 
 The performance improvement is dramatic.
 
-# v0.6.0 (2020-10-03)
+## With rusty_basic 0.4.0 (2020-10-03)
 
 Performance of the interpreter has dropped from 265 to 429msec
 from rusty_basic 0.3.0 to 0.4.0.
+
+## With rusty_basic 0.5.0 (2020-11-27)
+
+Slight improvement in performance to 376msec

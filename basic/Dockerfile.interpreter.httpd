@@ -15,7 +15,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Get rusty_basic from GitHub releases
-RUN curl -L https://github.com/ngeor/rusty-basic/releases/download/v0.4.0/rusty_basic -o /usr/local/bin/rusty_basic && chmod +x /usr/local/bin/rusty_basic
+RUN curl -L https://github.com/ngeor/rusty-basic/releases/download/v0.5.0/rusty_basic -o /usr/local/bin/rusty_basic && chmod +x /usr/local/bin/rusty_basic
 
 # To run with local binary instead:
 # COPY ./rusty_basic /usr/local/bin/rusty_basic

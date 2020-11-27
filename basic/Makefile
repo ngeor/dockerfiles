@@ -1,7 +1,7 @@
 .PHONY: all run-perf perf docker-build-standalone docker-build-httpd clean
 
 # TODO fix hardcoded unix PWD
-PWD_UNIX = /c/Users/ngeor/Projects/github/dockerfiles/basic
+PWD_UNIX = /c/Users/ngeor/Projects/github/kamino/dockerfiles/basic
 
 # Location of binaries
 GWBASIC_EXE = ./bin/GWBASIC.EXE
