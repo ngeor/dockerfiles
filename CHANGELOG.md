@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Removed `maven-awscli` image
 - Removed `python-helm-kubectl-terraform` image
 - Removed `ruby-helm-kubectl-terraform` image
+- Removed MySQL docker-compose file
 
 ## [2021-03-10-multirepo]
 
