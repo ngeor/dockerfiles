@@ -16,6 +16,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Removed Travis support and build script
 - Removed `awscli-alpine` image
 - Removed `awscli-terraform-alpine` image
+- Removed `az-helm-kubectl-terraform` image
+- Removed `helm-kubectl-terraform` image
+- Removed `jdk-helm-kubectl-terraform` image
+- Removed `python-helm-kubectl-terraform` image
+- Removed `ruby-helm-kubectl-terraform` image
 
 ## [2021-03-10-multirepo]
 
