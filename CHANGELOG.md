@@ -6,9 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Adding Vagrantfile for local development
+
+### Removed
+
 - Removed obsolete images from Docker Hub
 - Removed Travis support and build script
-- Adding Vagrantfile for local development
 
 ## [2021-03-10-multirepo]
 
