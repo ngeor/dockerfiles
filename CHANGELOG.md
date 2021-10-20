@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Removed `az-helm-kubectl-terraform` image
 - Removed `helm-kubectl-terraform` image
 - Removed `jdk-helm-kubectl-terraform` image
+- Removed `maven-awscli` image
 - Removed `python-helm-kubectl-terraform` image
 - Removed `ruby-helm-kubectl-terraform` image
 
