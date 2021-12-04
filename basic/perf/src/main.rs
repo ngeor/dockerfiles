@@ -37,7 +37,7 @@ impl Args {
                     } else if value == "--quiet" {
                         self.quiet = true;
                     } else {
-                        panic!(format!("Unexpected parameter {}", value));
+                        panic!("Unexpected parameter {}", value);
                     }
                 }
                 None => {
