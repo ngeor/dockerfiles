@@ -2,7 +2,7 @@ use std::path::Path;
 use std::path::PathBuf;
 
 use crate::options::Options;
-use crate::rand_file::make_unique_random_filename;
+use crate::rand_file::{make_unique_random_filename, Rand};
 
 #[derive(Debug)]
 pub struct TempFiles {
@@ -17,13 +17,14 @@ pub struct TempFiles {
 impl TempFiles {
     pub fn create(options: &Options) -> TempFiles {
         let batch_dir = batch_dir(&options);
+        let mut rand = Rand::new();
         TempFiles {
             batch_dir: batch_dir.to_path_buf(),
-            batch_file: make_unique_random_filename(batch_dir, "BAT"),
-            stdin_file: make_unique_random_filename(batch_dir, "INP"),
-            stdout_file: make_unique_random_filename(batch_dir, "OUT"),
-            dosbox_log_file: make_unique_random_filename(batch_dir, "LOG"),
-            dosbox_err_file: make_unique_random_filename(batch_dir, "ERR"),
+            batch_file: make_unique_random_filename(batch_dir, "BAT", &mut rand),
+            stdin_file: make_unique_random_filename(batch_dir, "INP", &mut rand),
+            stdout_file: make_unique_random_filename(batch_dir, "OUT", &mut rand),
+            dosbox_log_file: make_unique_random_filename(batch_dir, "LOG", &mut rand),
+            dosbox_err_file: make_unique_random_filename(batch_dir, "ERR", &mut rand),
         }
     }
 }
