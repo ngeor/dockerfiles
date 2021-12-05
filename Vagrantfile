@@ -83,4 +83,11 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get install -y cargo cargo-doc rustfmt rust-clippy dosbox apache2
   SHELL
+  config.vm.provision "file", source: "~/DOSBox/PROGS/GWBASIC/GWBASIC.EXE", destination: "~/GWBASIC.EXE"
+  config.vm.provision "file", source: "~/DOSBox/PROGS/QBASIC/QBASIC.EXE", destination: "~/QBASIC.EXE"
+  config.vm.provision "shell", inline: <<-SHELL
+    mv /home/vagrant/*.EXE /usr/local/bin/
+    chown root:root /usr/local/bin/*.EXE
+    chmod 444 /usr/local/bin/*.EXE
+  SHELL
 end
