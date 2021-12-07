@@ -1,3 +1,4 @@
+use std::collections::hash_map::HashMap;
 use std::env;
 use std::path::*;
 
@@ -17,5 +18,5 @@ fn run(dosbox: PathBuf) -> Result<(), String> {
     let args: Vec<String> = env::args().skip(1).collect();
     let cwd = PathBuf::from(&args[0]);
     let command = &args[1];
-    run_dosbox(dosbox, &cwd, command, &[])
+    run_dosbox(dosbox, &cwd, command, &HashMap::new())
 }

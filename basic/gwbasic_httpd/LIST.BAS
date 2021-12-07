@@ -17,7 +17,7 @@
 150 PRINT "]"
 160 GOTO 9999
 
-4050 PRINT "Status: 405 Method not allowed, send GET"
+4050 PRINT "Status: 405 Method not allowed, send GET (was " + METHOD$ + ")"
 4051 PRINT ""
 4052 GOTO 9999
 

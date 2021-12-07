@@ -1,6 +1,6 @@
+use std::collections::hash_map::HashMap;
 use std::env;
-use std::fs;
-use std::fs::File;
+use std::fs::{self, File};
 use std::io;
 use std::path::*;
 
@@ -51,7 +51,7 @@ fn run3(dosbox: PathBuf, gwbasic: PathBuf, bas_file: PathBuf) -> Result<(), Stri
     let gwbasic_copy = join(cwd, "GWBASIC.EXE");
     copy_without_permissions(&gwbasic, &gwbasic_copy).unwrap();
     let cmd = format!("GWBASIC.EXE {}", bas_file.file_name().unwrap().to_str().unwrap());
-    run_dosbox(dosbox, cwd, &cmd, &[]).unwrap();
+    run_dosbox(dosbox, cwd, &cmd, &HashMap::new()).unwrap();
     fs::remove_file(gwbasic_copy).unwrap();
     Ok(())
 }

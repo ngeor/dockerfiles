@@ -1,13 +1,12 @@
-use std::env;
-use std::fs;
-use std::fs::File;
+use std::collections::hash_map::HashMap;
+use std::fs::{self, File};
 use std::io::{self, Write};
 use std::path::*;
 use std::process::Command;
 
 use path_util::join;
 
-pub fn run_dosbox(dosbox: PathBuf, cwd: &Path, command: &str, batch_env: &[&str]) -> Result<(), String> {
+pub fn run_dosbox(dosbox: PathBuf, cwd: &Path, command: &str, batch_env: &HashMap<String, String>) -> Result<(), String> {
     if !cwd.is_dir() {
         return Err(format!("Could not find run directory {}", cwd.display()));
     }
@@ -42,11 +41,11 @@ pub fn run_dosbox(dosbox: PathBuf, cwd: &Path, command: &str, batch_env: &[&str]
     Ok(())
 }
 
-fn create_batch_wrapper(stdout_file_name: &str, batch_file: &PathBuf, cmd: &str, batch_env: &[&str]) -> Result<(), std::io::Error> {
+fn create_batch_wrapper(stdout_file_name: &str, batch_file: &PathBuf, cmd: &str, batch_env: &HashMap<String, String>) -> Result<(), std::io::Error> {
     let mut f = File::create(batch_file)?;
     write!(f, "@ECHO OFF\r\n")?;
-    for name in batch_env {
-        write!(f, "SET {}={}\r\n", name, env::var(name).unwrap_or_default())?;
+    for (key, value) in batch_env {
+        write!(f, "SET {}={}\r\n", key, value)?;
     }
     // switch to C: drive
     write!(f, "C:\r\n")?;

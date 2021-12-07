@@ -81,6 +81,20 @@ executable without runfiles / batch files.
 Defines an executable Bazel target that can run a QBasic program.
 See `gwbasic_binary` for details.
 
+## Apache configuration in Vagrant
+
+### Defaults
+
+- Logs at `/var/log/apache2/`, e.g. `/var/log/apache2.error.log`
+- `mod_cgi` disabled, but once enabled the default configuration
+  activates `/cgi-bin/` pointing to `/usr/lib/cgi-bin/`
+- Home folder at `/var/www/html/`
+
+### Customizations
+
+- Extra modules such as `mod_cgi` enabled through Vagrant
+- Assigned ownership to `www-data` group for www folders
+
 ## basic-launcher-rust
 
 It creates a batch file located at the common ancestor of the input program

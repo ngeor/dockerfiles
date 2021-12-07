@@ -1,7 +1,7 @@
+use std::collections::hash_map::HashMap;
 use std::env;
-use std::fs;
-use std::fs::File;
-use std::io;
+use std::fs::{self, File};
+use std::io::{self, Write};
 use std::path::*;
 
 extern crate dosbox_lib;
@@ -54,11 +54,18 @@ fn find_bas_file() -> Result<PathBuf, String> {
 fn run3(dosbox: PathBuf, gwbasic: PathBuf, bas_file: PathBuf) -> Result<(), String> {
     // copy GWBASIC into the same folder as the BAS_FILE
     let cwd = bas_file.parent().unwrap();
+    let stdin_path = join(&cwd, "STDIN.TXT");
+    create_stdin(&stdin_path).unwrap();
     let gwbasic_copy = join(cwd, "GWBASIC.EXE");
     copy_without_permissions(&gwbasic, &gwbasic_copy).unwrap();
     let cmd = format!("GWBASIC.EXE {}", bas_file.file_name().unwrap().to_str().unwrap());
-    run_dosbox(dosbox, cwd, &cmd, &["REQUEST_METHOD", "CONTENT_TYPE"]).unwrap();
+    let mut batch_env : HashMap<String, String> = HashMap::new();
+    batch_env.insert("REQUEST_METHOD".to_string(), env::var("REQUEST_METHOD").unwrap_or_default());
+    batch_env.insert("CONTENT_TYPE".to_string(), env::var("CONTENT_TYPE").unwrap_or_default());
+    batch_env.insert("STDIN".to_string(), "STDIN.TXT".to_string());
+    run_dosbox(dosbox, cwd, &cmd, &batch_env).unwrap();
     fs::remove_file(gwbasic_copy).unwrap();
+    fs::remove_file(stdin_path).unwrap();
     Ok(())
 }
 
@@ -66,4 +73,18 @@ fn copy_without_permissions(src: &Path, dest: &Path) -> Result<u64, io::Error> {
     let mut src_file = File::open(src)?;
     let mut dest_file = File::create(dest)?;
     io::copy(&mut src_file, &mut dest_file)
+}
+
+fn create_stdin(stdin_file: &PathBuf) -> io::Result<()> {
+    let mut f = File::create(stdin_file)?;
+    let stdin = io::stdin();
+    loop {
+        let mut line = String::new();
+        let num_bytes = stdin.read_line(&mut line)?;
+        if num_bytes == 0 {
+            break;
+        }
+        write!(f, "{}\r\n", line.trim_end())?;
+    }
+    Ok(())
 }
