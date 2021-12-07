@@ -4,7 +4,7 @@ package(default_visibility = ["//visibility:public"])
 
 rust_binary(
     name = "qbasic_dosbox_wrapper",
-    srcs = glob(["*.rs"]),
+    srcs = ["main.rs"],
     deps = [
         "//basic/dosbox_wrapper:dosbox_lib",
     ],
