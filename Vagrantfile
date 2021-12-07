@@ -70,7 +70,8 @@ Vagrant.configure("2") do |config|
 
   # Docker
   config.vm.provision "shell", inline: <<-SHELL
-    apt-get install -y docker-compose
+    apt-get update
+	apt-get install -y docker-compose
     addgroup vagrant docker
   SHELL
 end
