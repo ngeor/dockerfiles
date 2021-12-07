@@ -1,3 +1,4 @@
+use std::env;
 use std::fs;
 use std::fs::File;
 use std::io::{self, Write};
@@ -6,7 +7,7 @@ use std::process::Command;
 
 use path_util::join;
 
-pub fn run_dosbox(dosbox: PathBuf, cwd: &Path, command: &str) -> Result<(), String> {
+pub fn run_dosbox(dosbox: PathBuf, cwd: &Path, command: &str, batch_env: &[&str]) -> Result<(), String> {
     if !cwd.is_dir() {
         return Err(format!("Could not find run directory {}", cwd.display()));
     }
@@ -18,7 +19,7 @@ pub fn run_dosbox(dosbox: PathBuf, cwd: &Path, command: &str) -> Result<(), Stri
     let stdout_file_name = "OUT.TXT";
     let stdout_file = join(cwd, stdout_file_name);
     let batch_file = join(cwd, "WRAP.BAT");
-    create_batch_wrapper(stdout_file_name, &batch_file, command).unwrap();
+    create_batch_wrapper(stdout_file_name, &batch_file, command, batch_env).unwrap();
 
     let dosbox_conf = join(cwd, "dosbox.conf");
     create_minimal_dosbox_config(&dosbox_conf).unwrap();
@@ -41,9 +42,12 @@ pub fn run_dosbox(dosbox: PathBuf, cwd: &Path, command: &str) -> Result<(), Stri
     Ok(())
 }
 
-fn create_batch_wrapper(stdout_file_name: &str, batch_file: &PathBuf, cmd: &str) -> Result<(), std::io::Error> {
+fn create_batch_wrapper(stdout_file_name: &str, batch_file: &PathBuf, cmd: &str, batch_env: &[&str]) -> Result<(), std::io::Error> {
     let mut f = File::create(batch_file)?;
     write!(f, "@ECHO OFF\r\n")?;
+    for name in batch_env {
+        write!(f, "SET {}={}\r\n", name, env::var(name).unwrap_or_default())?;
+    }
     // switch to C: drive
     write!(f, "C:\r\n")?;
     write!(f, "{} > {}\r\n", cmd, stdout_file_name)?;

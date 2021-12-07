@@ -40,7 +40,7 @@ fn run3(dosbox: PathBuf, qbasic: PathBuf, bas_file: PathBuf) -> Result<(), Strin
     let qbasic_copy = join(cwd, "QBASIC.EXE");
     copy_without_permissions(&qbasic, &qbasic_copy).unwrap();
     let cmd = format!("QBASIC.EXE /RUN {}", bas_file.file_name().unwrap().to_str().unwrap());
-    run_dosbox(dosbox, cwd, &cmd).unwrap();
+    run_dosbox(dosbox, cwd, &cmd, &[]).unwrap();
     fs::remove_file(qbasic_copy).unwrap();
     Ok(())
 }
