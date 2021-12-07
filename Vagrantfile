@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
-  config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -68,71 +68,9 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-  # Bazel
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt-get install -y curl gnupg
-    curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/bazel.gpg
-    echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
-    apt-get update
-    apt-get install -y bazel-4.2.1
-    ln -f -s /usr/bin/bazel-4.2.1 /usr/bin/bazel
-  SHELL
-
   # Docker
   config.vm.provision "shell", inline: <<-SHELL
     apt-get install -y docker-compose
     addgroup vagrant docker
-  SHELL
-
-  # Rust
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get install -y cargo cargo-doc rustfmt rust-clippy
-  SHELL
-
-  # dosbox
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get install -y dosbox
-  SHELL
-
-  # apache
-  config.vm.provision "file", source: "./basic/httpd/extra.conf", destination: "~/extra.conf"
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get install -y apache2
-    # active cgi module https://httpd.apache.org/docs/current/mod/mod_cgi.html
-    a2enmod cgid
-    # activate rewrite module https://httpd.apache.org/docs/current/mod/mod_rewrite.html
-    a2enmod rewrite
-    # activate actions module https://httpd.apache.org/docs/current/mod/mod_actions.html
-    a2enmod actions
-    # copy extra.conf
-    mv /home/vagrant/extra.conf /etc/apache2/conf-available/
-    chown root:root /etc/apache2/conf-available/extra.conf
-    chmod 644 /etc/apache2/conf-available/extra.conf
-    a2enconf extra
-    # fix permissions of data folders
-    chown -R root:www-data /var/www/html
-    chmod 775 /var/www/html
-    chown -R root:www-data /usr/lib/cgi-bin
-    chmod 775 /usr/lib/cgi-bin/
-    # add user to www-data group
-    addgroup vagrant www-data
-    # restart Apache
-    systemctl restart apache2
-  SHELL
-
-  # Copy GWBASIC/QBASIC into PATH
-  config.vm.provision "file", source: "~/DOSBox/PROGS/GWBASIC/GWBASIC.EXE", destination: "~/GWBASIC.EXE"
-  config.vm.provision "file", source: "~/DOSBox/PROGS/QBASIC/QBASIC.EXE", destination: "~/QBASIC.EXE"
-  config.vm.provision "shell", inline: <<-SHELL
-    mv /home/vagrant/*.EXE /usr/local/bin/
-    chown root:root /usr/local/bin/*.EXE
-    chmod 444 /usr/local/bin/*.EXE
-  SHELL
-
-  # Warm up bazel
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    cd /vagrant && bazel build //...
-    # TODO ./basic/httpd/httpd.sh  does not work due to permission issue copying files
   SHELL
 end
