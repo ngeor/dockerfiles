@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Removed `vsftpd` image
 - Removed MySQL docker-compose file
 - Removed TeamCity docker-compose file
+- Moved Basic cgi-bin experiments to new repo https://github.com/ngeor/cgi-bas
 
 ## [2021-03-10-multirepo]
 
